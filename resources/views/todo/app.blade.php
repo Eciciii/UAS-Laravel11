@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>To Do List</title>
+    <title>Daftar Tugas</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
@@ -13,7 +13,7 @@
     <!-- 00. Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid col-md-7">
-            <div class="navbar-brand">My To Do List</div>
+            <div class="navbar-brand">Daftar Tugas Saya</div>
             <!-- 
             <div class="navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav">
@@ -35,43 +35,50 @@
     
     <div class="container mt-4">
         <!-- 01. Content-->
-        <h1 class="text-center mb-4">To Do List</h1>
+        <h1 class="text-center mb-4">Daftar Tugas</h1>
         <div class="row justify-content-center">
             <div class="col-md-8">
-             <div class="card mb-3">
-                <div class="card-body">
-                    {{-- pesan berhasil --}}
-                    @if (session('success'))
-                        <div class="alert alert-success">
-                            {{ session('success') }}
-                        </div>
-                    @endif
-
-                    <!-- pesan error -->
-                    @if ($errors->any())
-                    <div class="alert alert-danger">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
+                <!-- Ringkasan Tugas -->
+                <div class="card mb-3">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Ringkasan Tugas</h5>
+                        <p class="card-text">Pending: {{ $count_pending }} | Selesai: {{ $count_done }}</p>
                     </div>
-                        
-                    @endif
-                    <!-- 02. Form input data -->
-                    <form id="todo-form" action="{{ route('todo.post') }}" method="post">
-                        @csrf 
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" name="task" id="todo-input"
-                                placeholder="Tambah task baru" required value="{{ old('task') }}">
-                            <button class="btn btn-primary" type="submit">
-                                Simpan
-                            </button>
+                </div>
+                <div class="card mb-3">
+                    <div class="card-body">
+                        {{-- pesan berhasil --}}
+                        @if (session('success'))
+                            <div class="alert alert-success">
+                                {{ session('success') }}
+                            </div>
+                        @endif
+
+                        <!-- pesan error -->
+                        @if ($errors->any())
+                        <div class="alert alert-danger">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
                         </div>
-                    </form>
-                  </div>
+                            
+                        @endif
+                        <!-- 02. Form input data -->
+                        <form id="todo-form" action="{{ route('todo.post') }}" method="post">
+                            @csrf 
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" name="task" id="todo-input"
+                                    placeholder="Tambah tugas baru" required value="{{ old('task') }}">
+                                <button class="btn btn-primary" type="submit">
+                                    Simpan
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
                 <div class="card">
                     <div class="card-body">
-                        <!-- 03. Searching -->
+                        <!-- 03. Pencarian -->
                         <form id="todo-form" action="{{ route('todo') }}" method="get">
                             <div class="input-group mb-3">
                                 <input type="text" class="form-control" name="search" value="{{ request('search') }}" 
@@ -84,7 +91,7 @@
                         
                         <ul class="list-group mb-4" id="todo-list">
                             @foreach ($data as $item)
-                            <!-- 04. Display Data -->
+                            <!-- 04. Menampilkan Data -->
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 <span class="task-text">
                                     {!! $item->is_done == '1'?'<del>':'' !!}
@@ -103,7 +110,7 @@
                                         data-bs-target="#collapse-{{ $loop->index }}" aria-expanded="false">✎</button>
                                 </div>
                             </li>
-                            <!-- 05. Update Data -->
+                            <!-- 05. Memperbarui Data -->
                             <li class="list-group-item collapse" id="collapse-{{ $loop->index }}">
                                 <form action="{{ route('todo.update', ['id'=>$item->id]) }}" method="POST">
                                     @csrf
@@ -132,8 +139,6 @@
                             @endforeach
                         </ul>
                         {{ $data->links() }}
-                        
-                        
                     </div>
                 </div>
             </div>
@@ -141,9 +146,6 @@
     </div>
 
     <!-- Bootstrap JS Bundle (popper.js included) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js">
-    </script>
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>
